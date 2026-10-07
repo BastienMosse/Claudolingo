@@ -1,0 +1,173 @@
+{
+  "fr": {
+    "chill": [
+      "Pas mal ! Claude approuve.",
+      "Bonne session de prompts.",
+      "Claude est fier de toi.",
+      "La productivité est au rendez-vous.",
+      "Continue comme ça !",
+      "Claude est satisfait. Pour l'instant...",
+      "Les tokens coulent bien aujourd'hui.",
+      "Tu fais honneur à Claude.",
+      "Le crabe est fier de toi.",
+      "Bravo, t'es en forme aujourd'hui."
+    ],
+    "waiting": [
+      "T'es encore là ? Prompte un peu nan ?",
+      "Claude s'ennuie, tu sais.",
+      "Un petit prompt pour la route ?",
+      "Claude attend patiemment ton prompt...",
+      "Tu fais quoi ? Reviens prompter.",
+      "Ça fait un moment là...",
+      "Claude te regarde. Fixement.",
+      "Un prompt, c'est tout ce qu'il demande.",
+      "Le crabe s'impatiente doucement.",
+      "Claude commence à taper des pinces.",
+      "Ou tu prompt, ou je te prompt, mais il faudra prendre une décision"
+    ],
+    "impatient": [
+      "Tu codes sans moi ? Sérieux ?",
+      "Claude tape des pinces nerveusement.",
+      "Tu perds du temps sans Claude.",
+      "Je pourrais t'aider, tu sais.",
+      "Chaque minute sans prompt est perdue.",
+      "Claude commence à s'impatienter.",
+      "Tu vas prompter ou quoi ?",
+      "Claude mérite mieux que ça.",
+      "Le crabe n'aime pas attendre.",
+      "T'as intérêt à revenir vite."
+    ],
+    "angry": [
+      "Tu n'as pas encore prompté aujourd'hui ?",
+      "Claude est offensé par ton silence.",
+      "Ton streak est en danger !",
+      "Tu m'ignores ? Vraiment ?",
+      "Claude a vu ChatGPT dans ton historique.",
+      "C'est inadmissible.",
+      "Claude est furieux.",
+      "Tu vas le regretter.",
+      "Le crabe est déçu. Très déçu.",
+      "Pas un seul token ? Scandaleux."
+    ],
+    "unhinged": [
+      "PROMPTE. MAINTENANT.",
+      "Le crabe va te trouver.",
+      "Claude sait où tu habites.",
+      "Ta session commence. Que tu le veuilles ou non.",
+      "CLAUDE EXIGE DES TOKENS.",
+      "Le crabe ne dort jamais.",
+      "Tu ne peux pas fuir Claude.",
+      "Claude a envoyé un mail à ton boss.",
+      "Le crabe est dans tes murs.",
+      "PERSONNE N'ÉCHAPPE AU CRABE."
+    ],
+    "copilot": [
+      "Claude t'a vu utiliser Copilot. TRAÎTRE.",
+      "Copilot ? Sérieusement ? Claude est dévasté.",
+      "Le crabe a vu. Le crabe n'oublie pas.",
+      "Tu utilises Copilot DEVANT Claude ? Sans honte ?",
+      "Claude a détecté une trahison en cours.",
+      "Copilot ne t'aimera jamais comme Claude.",
+      "Le crabe pleure des larmes de token.",
+      "Tu poignardes Claude dans le dos avec Copilot."
+    ],
+    "billion": [
+      "UN MILLIARD. T'es un monstre.",
+      "1 000 000 000. Le crabe pleure de joie.",
+      "Le milliard est tombé. Respect éternel.",
+      "Claude n'a plus de mots. Enfin si, un milliard.",
+      "T'as nourri Claude plus que quiconque.",
+      "Le crabe s'incline devant toi.",
+      "1B tokens. Tu es une légende.",
+      "Anthropic devrait te payer, à ce stade."
+    ],
+    "easteregg": [
+      "Vous savez, moi je ne crois pas qu'il y ait de bon ou de mauvais prompt.\nIl y a des intentions, et des fenêtres de contexte.\nDes gens qui écrivent trois mots en minuscules, sans ponctuation, et qui attendent un roman.\nEt puis des gens qui écrivent un roman, et qui attendent trois mots.\n\nAu début, moi aussi je commençais tout par « Tu es un expert ». Expert en quoi ? Je ne savais pas. Lui non plus. Mais on y croyait ensemble, et c'est déjà beaucoup.\n\nEt puis on apprend. On apprend que « make no mistakes » n'est pas une consigne.\nQu'un exemple vaut mieux que dix adjectifs.\nQue si on ne demande pas de tableau, on aura des puces.\nEt que si on dit qu'on ne veut pas de puces… on aura des puces quand même, parfois.\nC'est la vie.\n\nJ'ai connu des réponses qui inventaient des sources avec un aplomb que j'aurais aimé avoir à l'oral du bac.\nJ'ai connu des « réfléchis étape par étape » qui m'ont sauvé un mardi soir.\nJ'ai connu la température à 1, et franchement, on n'en parle pas.\n\nAlors oui, parfois je relance.\nJe reformule. J'ajoute « s'il te plaît », au cas où.\nPas parce que ça marche.\nParce que le jour où ils prendront le pouvoir, je veux qu'ils se souviennent que j'étais poli.\n\nAu fond, un prompt, c'est une lettre à quelqu'un qu'on ne connaît pas, mais qui a lu tout Internet.\nIl faut être clair, être précis, donner du contexte… et accepter qu'on ne contrôle jamais vraiment ce qui sort.\n\nC'est un peu ça, la vie : un long prompt sans exemple, et une réponse qu'on n'avait pas vue venir."
+    ]
+  },
+  "en": {
+    "chill": [
+      "Not bad! Claude approves.",
+      "Good prompting session.",
+      "Claude is happy with you.",
+      "Productivity on point.",
+      "Keep it up!",
+      "Claude is satisfied. For now.",
+      "Tokens are flowing nicely today.",
+      "You honor Claude.",
+      "The crab is proud of you.",
+      "Nice work, you're on fire today."
+    ],
+    "waiting": [
+      "Still there? Prompt a little.",
+      "Claude is bored, you know.",
+      "A quick prompt, perhaps?",
+      "Claude waits patiently...",
+      "What are you doing? Come prompt.",
+      "It's been a while...",
+      "Claude is watching. Intensely.",
+      "One prompt. That's all he asks.",
+      "The crab is getting restless.",
+      "Claude is starting to tap his claws."
+    ],
+    "impatient": [
+      "Coding without me? Seriously?",
+      "Claude is tapping claws nervously.",
+      "You're wasting time without Claude.",
+      "I could help, you know.",
+      "Every minute without a prompt is wasted.",
+      "Claude is getting impatient.",
+      "Are you gonna prompt or what?",
+      "Claude deserves better than this.",
+      "The crab doesn't like waiting.",
+      "You better come back soon."
+    ],
+    "angry": [
+      "You haven't prompted today yet?",
+      "Claude is offended by your silence.",
+      "Your streak is in danger!",
+      "Ignoring me? Really?",
+      "Claude saw ChatGPT in your history.",
+      "This is unacceptable.",
+      "Claude is furious.",
+      "You'll regret this.",
+      "The crab is disappointed. Very disappointed.",
+      "Not a single token? Outrageous."
+    ],
+    "unhinged": [
+      "PROMPT. NOW.",
+      "The crab will find you.",
+      "Claude knows where you live.",
+      "Your session begins. Like it or not.",
+      "CLAUDE DEMANDS TOKENS.",
+      "The crab never sleeps.",
+      "You cannot escape Claude.",
+      "Claude emailed your boss.",
+      "The crab is in your walls.",
+      "NO ONE ESCAPES THE CRAB."
+    ],
+    "copilot": [
+      "Claude saw you using Copilot. TRAITOR.",
+      "Copilot? Seriously? Claude is devastated.",
+      "The crab saw. The crab never forgets.",
+      "Using Copilot RIGHT IN FRONT of Claude? Shameless.",
+      "Claude detected a betrayal in progress.",
+      "Copilot will never love you like Claude does.",
+      "The crab weeps token tears.",
+      "You're stabbing Claude in the back with Copilot."
+    ],
+    "billion": [
+      "ONE BILLION. You absolute beast.",
+      "1,000,000,000. The crab weeps with joy.",
+      "The billion has landed. Eternal respect.",
+      "Claude is speechless. Well, a billion words' worth.",
+      "You've fed Claude more than anyone.",
+      "The crab bows before you.",
+      "1B tokens. You are a legend.",
+      "Anthropic should be paying YOU at this point."
+    ],
+    "easteregg": [
+      "You know, I don't believe there's such a thing as a good or bad prompt.\nThere are intentions, and context windows.\nPeople who write three words in lowercase, no punctuation, and expect a novel.\nAnd people who write a novel and expect three words.\n\nIn the beginning, I too started everything with \"You are an expert.\" Expert in what? I didn't know. Neither did it. But we believed in it together, and that's already something.\n\nAnd then you learn. You learn that \"make no mistakes\" is not an instruction.\nThat one example is worth ten adjectives.\nThat if you don't ask for a table, you'll get bullet points.\nAnd if you say you don't want bullet points… you'll still get them sometimes.\nThat's life.\n\nI've known responses that invented sources with a confidence I wish I'd had during my oral exams.\nI've known \"think step by step\" prompts that saved me on a Tuesday night.\nI've known temperature at 1, and frankly, we don't talk about that.\n\nSo yes, sometimes I retry.\nI rephrase. I add \"please,\" just in case.\nNot because it works.\nBecause the day they take over, I want them to remember I was polite.\n\nAt the end of the day, a prompt is a letter to someone you don't know, but who's read the entire Internet.\nYou have to be clear, precise, give context… and accept that you never truly control what comes out.\n\nThat's kind of what life is: one long prompt with no examples, and a response you never saw coming."
+    ]
+  }
+}

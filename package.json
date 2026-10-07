@@ -1,0 +1,82 @@
+{
+  "name": "claudolingo",
+  "displayName": "Claudolingo",
+  "description": "Le crabe de Claude te surveille. Stats Claude Pro en temps réel dans VS Code.",
+  "version": "0.1.0",
+  "publisher": "lucipher-lab",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "icon": "icon.png",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claudolingo",
+          "title": "Claudolingo",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "claudolingo": [
+        {
+          "type": "webview",
+          "id": "claudolingo.panel",
+          "name": "Claudolingo"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudolingo.feed",
+        "title": "Claudolingo : j'ai utilisé Claude !"
+      },
+      {
+        "command": "claudolingo.status",
+        "title": "Claudolingo : voir mon streak"
+      }
+    ],
+    "configuration": {
+      "title": "Claudolingo",
+      "properties": {
+        "claudolingo.reminderIntervalMinutes": {
+          "type": "number",
+          "default": 45,
+          "description": "Minutes avant que Claudolingo commence à s'impatienter"
+        },
+        "claudolingo.language": {
+          "type": "string",
+          "enum": [
+            "fr",
+            "en"
+          ],
+          "default": "fr",
+          "description": "Langue des messages"
+        },
+        "claudolingo.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Activer/désactiver Claudolingo"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.5.0"
+  }
+}

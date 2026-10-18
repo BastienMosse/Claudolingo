@@ -4,6 +4,7 @@ import { isEnabled } from './config';
 import { StatusBar } from './statusBar';
 import { nag, registerCommands } from './commands';
 import { buildSnapshot } from './stats/snapshot';
+import { watchCopilot } from './copilot';
 import { CrabPanelProvider } from './webview/provider';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -27,6 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   registerCommands(context, refresh);
+  watchCopilot(context);
   refresh();
 
   const extPath = context.extensionUri.fsPath;

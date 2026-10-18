@@ -2,7 +2,7 @@
   "name": "claudolingo",
   "displayName": "Claudolingo",
   "description": "Le crabe de Claude te surveille. Stats Claude Pro en temps réel dans VS Code.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "lucipher-lab",
   "repository": {
     "type": "git",

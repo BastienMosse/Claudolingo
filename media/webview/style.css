@@ -1,0 +1,395 @@
+/* Claudolingo sidebar: Duolingo's visual language, orange edition.
+   The scene (crab, owl, bubble) is styled in scene.css. */
+
+/* ---------- Font ---------- */
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('../fonts/nunito.woff2') format('woff2');
+  font-weight: 200 1000;
+  font-display: block;
+}
+
+/* ---------- Tokens ---------- */
+
+:root {
+  --orange: #ff9600;
+  --orange-dark: #d97f00;
+  --orange-light: #ffb84d;
+  --yellow: #ffc800;
+
+  /* Neutrals derived from the VS Code theme so light and dark both work */
+  --bg: var(--vscode-sideBar-background, #1e1e1e);
+  --fg: var(--vscode-foreground, #ccc);
+  --card: color-mix(in srgb, var(--fg) 4%, var(--bg));
+  --line: color-mix(in srgb, var(--fg) 15%, var(--bg));
+  --track: color-mix(in srgb, var(--fg) 12%, var(--bg));
+  --muted: color-mix(in srgb, var(--fg) 58%, var(--bg));
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { overflow-x: hidden; }
+
+body {
+  margin: 0;
+  padding: 10px 8px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Nunito', var(--vscode-font-family, system-ui), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Cards (3D Duolingo look) ---------- */
+
+.card, .stat-card, .mood-chip, .error-card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+}
+
+.card { padding: 12px; margin: 8px 0; }
+
+.section-title {
+  margin: 18px 2px 8px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Mood chip ---------- */
+
+.mood-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  margin: 10px 0 2px;
+  font-size: 12px;
+}
+.mood-emoji {
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+  animation: wobble 2.4s ease-in-out infinite;
+}
+.mood-text { min-width: 0; }
+.mood-text b { color: var(--orange); font-weight: 900; }
+
+/* ---------- Easter egg ---------- */
+
+.easteregg {
+  margin: 10px 0;
+  padding: 12px;
+  border: 2px solid var(--orange);
+  border-bottom-width: 4px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--orange) 8%, var(--bg));
+  font-size: 11.5px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ---------- Stat cards ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  min-width: 0;
+  transition: translate .15s ease, border-color .15s ease;
+}
+/* `translate` instead of `transform`, so it doesn't fight the .reveal animation */
+.stat-card:hover { translate: 0 -2px; border-color: color-mix(in srgb, var(--orange) 45%, var(--line)); }
+.stat-icon { flex: none; display: flex; }
+.stat-icon svg { width: 26px; height: 26px; display: block; }
+.stat-card:hover .stat-icon { animation: wiggle .5s ease-in-out; }
+.stat-body { min-width: 0; }
+.stat-value {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Progress bars ---------- */
+
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.progress-title { display: inline-flex; align-items: center; gap: 5px; }
+.progress-title svg { width: 14px; height: 14px; flex: none; }
+.progress-value { color: var(--muted); white-space: nowrap; }
+
+.progress {
+  height: 16px;
+  margin: 5px 0 12px;
+  border-radius: 999px;
+  background: var(--track);
+  overflow: hidden;
+}
+.progress:last-child { margin-bottom: 2px; }
+.progress-fill {
+  position: relative;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--orange);
+  overflow: hidden;
+  transition: width 1.1s cubic-bezier(.3, 1.25, .5, 1);
+  transition-delay: calc(var(--i, 0) * 120ms + 200ms);
+}
+.progress-fill.alt { background: linear-gradient(90deg, var(--orange-light), var(--yellow)); }
+/* Glossy highlight line */
+.progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .35);
+}
+/* Moving shimmer */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .4) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: shimmer 2.8s ease-in-out infinite;
+}
+
+/* ---------- 7-day chart ---------- */
+
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.chart {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  height: 96px;
+}
+.bar-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.bar-track { flex: 1; display: flex; align-items: flex-end; justify-content: center; }
+.bar {
+  position: relative;
+  width: 100%;
+  max-width: 24px;
+  border-radius: 7px 7px 4px 4px;
+  background: var(--orange-light);
+  transition: height .9s cubic-bezier(.3, 1.3, .5, 1), filter .15s ease;
+  transition-delay: calc(var(--i, 0) * 70ms + 250ms), 0s;
+}
+.bar-col.today .bar {
+  background: var(--orange);
+  box-shadow: inset 0 -4px 0 var(--orange-dark);
+}
+.bar-col:hover .bar { filter: brightness(1.18); }
+.bar-label {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--muted);
+}
+.bar-col.today .bar-label { color: var(--orange); }
+.bar-tip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  z-index: 2;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--orange-dark);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px) scale(.85);
+  transition: opacity .15s ease, transform .2s cubic-bezier(.3, 1.6, .5, 1);
+}
+.bar-col:hover .bar-tip { opacity: 1; transform: translate(-50%, 0) scale(1); }
+
+/* ---------- Models ---------- */
+
+.model-row { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.model-top { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
+.model-name { font-weight: 800; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-tokens { font-weight: 900; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mini-bar {
+  height: 6px;
+  margin-top: 5px;
+  border-radius: 3px;
+  background: var(--track);
+  overflow: hidden;
+}
+.mini-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--orange);
+  transition: width 1.1s cubic-bezier(.3, 1.25, .5, 1);
+  transition-delay: calc(var(--i, 0) * 80ms + 300ms);
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Stats ---------- */
+
+.info-row { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; font-size: 12px; }
+.info-row span:first-child { color: var(--muted); }
+.info-row span:last-child { font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Primary button ---------- */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 18px 0 8px;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background: var(--orange);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 0 var(--orange-dark);
+  cursor: pointer;
+  transition: translate .08s, box-shadow .08s, filter .15s;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn:active { translate: 0 4px; box-shadow: 0 0 0 var(--orange-dark); }
+.btn:focus-visible { outline: 2px solid var(--vscode-focusBorder); outline-offset: 2px; }
+.btn-icon { display: inline-block; font-size: 16px; line-height: 1; }
+.btn.spinning .btn-icon { animation: spin .7s linear infinite; }
+
+/* ---------- Error page ---------- */
+
+.error-card { padding: 14px; margin: 8px 0; }
+.error-title { font-size: 16px; font-weight: 900; color: var(--orange); }
+.error-card p { margin: 6px 0 10px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.error-card code {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: var(--track);
+  font-family: var(--vscode-editor-font-family, monospace), monospace;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Entrance cascade ---------- */
+
+.reveal {
+  animation: rise .55s cubic-bezier(.3, 1.4, .5, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+/* Refreshes swap the dashboard in place: don't replay the entrance */
+#app.updated .reveal { animation: none; }
+
+/* ---------- Confetti (1 billion easter egg, spawned by main.js) ---------- */
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+}
+.confetti i {
+  position: absolute;
+  top: -12px;
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  background: var(--orange);
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+}
+@keyframes wobble {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-12deg) scale(1.12); }
+  50% { transform: rotate(10deg) scale(1.12); }
+  75% { transform: rotate(-5deg) scale(1.05); }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes confetti-fall {
+  to { transform: translate(var(--dx, 0), 105vh) rotate(var(--r, 360deg)); }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

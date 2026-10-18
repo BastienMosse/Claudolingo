@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <!-- Speech bubble. The text is HTML (foreignObject) so it wraps and main.js can resize it. -->
+  <g id="bubble" class="bubble">
+    <path transform="translate(0 6)" fill="#e1e1e1"
+          d="M 421 40 H 744 Q 770 40 770 66 V 164 Q 770 190 744 190 H 480 L 432 226 L 446 190 H 421 Q 395 190 395 164 V 66 Q 395 40 421 40 Z"/>
+    <path fill="#ffffff" stroke="#e5e5e5" stroke-width="3" stroke-linejoin="round"
+          d="M 421 40 H 744 Q 770 40 770 66 V 164 Q 770 190 744 190 H 480 L 432 226 L 446 190 H 421 Q 395 190 395 164 V 66 Q 395 40 421 40 Z"/>
+    <foreignObject x="412" y="52" width="342" height="128">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="bubble-box"><span id="bubble-text">{{BUBBLE}}</span></div>
+    </foreignObject>
+  </g>
+</svg>

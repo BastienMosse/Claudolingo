@@ -2,3 +2,7 @@ src/
 tsconfig.json
 node_modules/
 .gitignore
+media/serie-en-danger_editable.svg
+.github/
+.vscode/
+*.vsix

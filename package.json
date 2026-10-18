@@ -2,8 +2,12 @@
   "name": "claudolingo",
   "displayName": "Claudolingo",
   "description": "Le crabe de Claude te surveille. Stats Claude Pro en temps réel dans VS Code.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "lucipher-lab",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BastienMosse/Claudolingo.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -70,6 +74,7 @@
     }
   },
   "scripts": {
+    "vscode:prepublish": "npm run build",
     "build": "tsc",
     "watch": "tsc -w",
     "package": "vsce package"
@@ -77,6 +82,7 @@
   "devDependencies": {
     "@types/node": "^26.6.4",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^4.0.0",
     "typescript": "^5.5.0"
   }
 }

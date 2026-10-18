@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <!-- The owl. Clipped at the bush line so it can hide behind bush.svg -->
+  <defs>
+    <clipPath id="owl-clip">
+      <rect x="560" y="0" width="240" height="342"/>
+    </clipPath>
+  </defs>
+
+  <g id="owl" clip-path="url(#owl-clip)">
+    <g class="owl-hide">
+      <g class="owl-bob">
+        <!-- wings: small triangles flaring out at the bottom sides -->
+        <g transform="translate(612 272)">
+          <g class="owl-wing owl-wing-l"><path d="M 2 -6 C -6 10 -14 26 -24 38 Q -27 43 -21 43.5 L 10 48 L 8 -2 Z" fill="#6cc201"/></g>
+        </g>
+        <g transform="translate(728 272)">
+          <g class="owl-wing owl-wing-r"><path d="M -2 -6 C 6 10 14 26 24 38 Q 27 43 21 43.5 L -10 48 L -8 -2 Z" fill="#6cc201"/></g>
+        </g>
+
+        <!-- head + body: one bell-shaped blob with short ear tufts -->
+        <path d="M 670 340 C 640 340 618 334 613 318 C 609 300 610 280 611 262 C 612 245 612 232 614 222 C 615 213 622 208 633 205 C 645 210 660 218.5 670 219.5 C 680 218.5 695 210 707 205 C 718 208 725 213 726 222 C 728 232 728 245 729 262 C 730 280 731 300 727 318 C 722 334 700 340 670 340 Z" fill="#6cc201"/>
+
+        <ellipse cx="657" cy="338" rx="8" ry="4.5" fill="#f89000"/>
+        <ellipse cx="683" cy="338" rx="8" ry="4.5" fill="#f89000"/>
+
+        <!-- belly chevrons -->
+        <path d="M 650 305 Q 657.5 306.2 665 305 Q 663.5 310.5 657.5 310.5 Q 651.5 310.5 650 305 Z M 675 305 Q 682.5 306.2 690 305 Q 688.5 310.5 682.5 310.5 Q 676.5 310.5 675 305 Z M 662.5 316 Q 670 317.2 677.5 316 Q 676 321.5 670 321.5 Q 664 321.5 662.5 316 Z" fill="#94d91f"/>
+
+        <!-- light green face mask: thick rings around the eyes + feather tufts -->
+        <g fill="#94d91f">
+          <ellipse cx="643" cy="257" rx="22" ry="27"/>
+          <ellipse cx="697" cy="257" rx="22" ry="27"/>
+          <ellipse cx="670" cy="262" rx="10" ry="16"/>
+          <path d="M 624 236 L 627 221 L 636 231 Z M 633 231 L 639 218 L 646 231 Z"/>
+          <path d="M 716 236 L 713 221 L 704 231 Z M 707 231 L 701 218 L 694 231 Z"/>
+        </g>
+
+        <g class="owl-eyes-open">
+          <g class="owl-eye">
+            <ellipse cx="643" cy="257" rx="15.5" ry="19.5" fill="#ffffff"/>
+            <g class="owl-pupil">
+              <ellipse cx="646" cy="257" rx="6.4" ry="10" fill="#444444"/>
+              <circle cx="648.3" cy="252.4" r="2.2" fill="#ffffff"/>
+            </g>
+          </g>
+          <g class="owl-eye">
+            <ellipse cx="697" cy="257" rx="15.5" ry="19.5" fill="#ffffff"/>
+            <g class="owl-pupil">
+              <ellipse cx="694" cy="257" rx="6.4" ry="10" fill="#444444"/>
+              <circle cx="696.3" cy="252.4" r="2.2" fill="#ffffff"/>
+            </g>
+          </g>
+        </g>
+        <g class="owl-eyes-happy" opacity="0" fill="none" stroke="#444444" stroke-width="5" stroke-linecap="round">
+          <path d="M 632 262 Q 643 246 654 262"/>
+          <path d="M 686 262 Q 697 246 708 262"/>
+        </g>
+        <g class="owl-brows" opacity="0" fill="none" stroke="#3f8a00" stroke-width="4" stroke-linecap="round">
+          <path d="M 627 230 Q 641 229 655 221"/>
+          <path d="M 713 230 Q 699 229 685 221"/>
+        </g>
+
+        <!-- beak: orange lower part (closed) or open mouth, under the yellow cap -->
+        <path class="owl-beak" d="M 662 270.5 Q 670 272.5 678 270.5 Q 676 279 670 282 Q 664 279 662 270.5 Z" fill="#f89000"/>
+        <g class="owl-beak-open" opacity="0">
+          <rect x="661.8" y="270" width="16.4" height="22" rx="8" fill="#f89000"/>
+          <rect x="663.8" y="271" width="12.4" height="19" rx="6.2" fill="#b85420"/>
+          <path d="M 666 288.6 Q 667.5 281.5 676.2 282 L 676.2 284 Q 676.2 290 670 290 Q 667.4 290 666 288.6 Z" fill="#f8a0d0"/>
+        </g>
+        <path d="M 659.5 272 Q 659 263.5 670 263.5 Q 681 263.5 680.5 272 Q 670 274.5 659.5 272 Z" fill="#fbbc00"/>
+        <ellipse cx="670" cy="266.3" rx="4.2" ry="1.5" fill="#ffd95a"/>
+
+        <g transform="translate(736 228)">
+          <path class="owl-sweat" opacity="0" d="M 0 -9 Q 7 2 0 7 Q -7 2 0 -9 Z" fill="#7fd6ff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

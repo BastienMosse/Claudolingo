@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <!-- Bush in front of the owl: its hiding spot -->
+  <g id="bush" class="bush-front">
+    <circle cx="582" cy="402" r="36" fill="#4f9a3b"/>
+    <circle cx="625" cy="380" r="45" fill="#4f9a3b"/>
+    <circle cx="680" cy="370" r="48" fill="#4f9a3b"/>
+    <circle cx="735" cy="380" r="45" fill="#4f9a3b"/>
+    <circle cx="786" cy="396" r="40" fill="#4f9a3b"/>
+    <rect x="560" y="400" width="240" height="50" fill="#4f9a3b"/>
+    <circle cx="668" cy="344" r="13" fill="#60ad4a"/>
+    <circle cx="618" cy="360" r="10" fill="#60ad4a"/>
+    <circle cx="740" cy="358" r="9" fill="#60ad4a"/>
+  </g>
+</svg>

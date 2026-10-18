@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <!-- Streak sign. {{STREAK_LABEL}}, {{BAR_W}}, {{BAR_HL_W}} and {{CRACK_X}} are filled by scene.ts -->
+  <g id="sign">
+    <rect x="66" y="186" width="20" height="150" rx="4" fill="#b8793e"/>
+    <rect x="66" y="186" width="20" height="16" fill="#93592a"/>
+
+    <rect x="38" y="46" width="314" height="150" rx="24" fill="#e1e1e1"/>
+    <rect x="38" y="40" width="314" height="150" rx="24" fill="#ffffff" stroke="#e5e5e5" stroke-width="3"/>
+
+    <g id="sign-title">
+      <g transform="translate(100 92)">
+        <g class="flame">
+          <path d="M 0 22 C -14 22 -20 12 -20 2 C -20 -10 -12 -16 -8 -25 C -6 -16 -2 -14 0 -14 C 2 -20 5 -24 7 -26 C 14 -15 20 -6 20 4 C 20 14 12 22 0 22 Z" fill="#ff9600"/>
+          <path d="M 0 18 C -7 18 -10 13 -10 8 C -10 2 -5 -2 0 -8 C 5 -2 10 2 10 8 C 10 13 7 18 0 18 Z" fill="#ffc800"/>
+        </g>
+      </g>
+      <text id="counter-text" x="130" y="110" font-family="Nunito, sans-serif" font-size="44" font-weight="900" fill="#ff9600">{{STREAK_LABEL}}</text>
+    </g>
+
+    <rect x="70" y="140" width="230" height="20" rx="10" fill="#e5e5e5"/>
+    <g class="sign-fill">
+      <rect id="sign-fill" x="70" y="140" width="{{BAR_W}}" height="20" rx="10" fill="#ff9600"/>
+      <rect id="sign-fill-hl" x="78" y="144.5" width="{{BAR_HL_W}}" height="5" rx="2.5" fill="#ffb84d"/>
+    </g>
+
+    <!-- The bar "breaks" where the streak stops when the crab is angry -->
+    <g id="sign-crack" transform="translate({{CRACK_X}} 150)">
+      <g class="sign-crack">
+        <path d="M 1 -11 L 6 -4 L 0 2 L 6 9" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M -2 -17 L 1 -25 M 8 -15 L 14 -21 M -2 17 L 1 25 M 8 15 L 14 21" stroke="#cfcfcf" stroke-width="3" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <g transform="translate(318 152) scale(0.62)">
+      <g class="flame flame-end">
+        <path d="M 0 22 C -14 22 -20 12 -20 2 C -20 -10 -12 -16 -8 -25 C -6 -16 -2 -14 0 -14 C 2 -20 5 -24 7 -26 C 14 -15 20 -6 20 4 C 20 14 12 22 0 22 Z" fill="#ff9600"/>
+        <path d="M 0 18 C -7 18 -10 13 -10 8 C -10 2 -5 -2 0 -8 C 5 -2 10 2 10 8 C 10 13 7 18 0 18 Z" fill="#ffc800"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,5 +1,6 @@
 import type { Lang } from '../config';
 import type { Mood } from '../mood';
+import type { LeaderboardKind } from '../types';
 
 export interface Strings {
   locale: string;
@@ -25,6 +26,15 @@ export interface Strings {
   memberSince: string;
   refresh: string;
   retry: string;
+  leaderboard: string;
+  lbIntro: string;
+  lbPlaceholder: string;
+  lbJoin: string;
+  lbEdit: string;
+  lbConnectedAs: string;
+  lbShared: string;
+  lbWaiting: string;
+  boards: Record<LeaderboardKind, string>;
   /** Indexed by Date.getDay() */
   dayInitials: string[];
   moods: Record<Mood, string>;
@@ -59,6 +69,15 @@ const fr: Strings = {
   memberSince: 'Membre depuis',
   refresh: 'Rafraîchir',
   retry: 'Réessayer',
+  leaderboard: 'Classement',
+  lbIntro: 'Choisis un pseudo pour rejoindre le classement. Tes totaux de tokens seront partagés.',
+  lbPlaceholder: 'Ton pseudo',
+  lbJoin: 'Rejoindre',
+  lbEdit: 'modifier',
+  lbConnectedAs: 'Connecté en tant que',
+  lbShared: 'Ce que tu partages',
+  lbWaiting: 'En attente du classement…',
+  boards: { alltime: 'All-time', daily: 'Jour', weekly: 'Semaine' },
   dayInitials: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
   moods: { chill: 'Chill', waiting: 'En attente', impatient: 'Impatient', angry: 'Énervé', unhinged: 'Hors de contrôle' },
   lastPrompt: ago => ago === null ? "aucun prompt aujourd'hui" : ago ? `dernier prompt il y a ${ago}` : "dernier prompt à l'instant",
@@ -96,6 +115,15 @@ const en: Strings = {
   memberSince: 'Member since',
   refresh: 'Refresh',
   retry: 'Try again',
+  leaderboard: 'Leaderboard',
+  lbIntro: 'Pick a nickname to join the leaderboard. Your token totals will be shared.',
+  lbPlaceholder: 'Your nickname',
+  lbJoin: 'Join',
+  lbEdit: 'edit',
+  lbConnectedAs: 'Signed in as',
+  lbShared: 'What you share',
+  lbWaiting: 'Waiting for the leaderboard…',
+  boards: { alltime: 'All-time', daily: 'Daily', weekly: 'Weekly' },
   dayInitials: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
   moods: { chill: 'Chill', waiting: 'Waiting', impatient: 'Impatient', angry: 'Angry', unhinged: 'Unhinged' },
   lastPrompt: ago => ago === null ? 'no prompt today' : ago ? `last prompt ${ago} ago` : 'last prompt just now',

@@ -1,8 +1,43 @@
-import type { Snapshot } from '../types';
+import type { LeaderboardEntry, LeaderboardKind, Leaderboards, Snapshot } from '../types';
 import type { Strings } from './i18n';
 import { MOOD_EMOJIS } from '../mood';
 import { escHtml, formatDuration, formatModelName, formatTokens } from '../format';
 import { icons } from './icons';
+
+const BOARDS: LeaderboardKind[] = ['alltime', 'daily', 'weekly'];
+
+/** Self-contained animated crab, used as the leaderboard loading indicator. */
+function loadingCrab(): string {
+  return `<svg class="crab-load" viewBox="0 0 120 92" aria-hidden="true">
+  <ellipse class="cl-shadow" cx="60" cy="84" rx="30" ry="6"/>
+  <g class="cl-crab">
+    <g stroke="#d97f00" stroke-width="4" stroke-linecap="round" fill="none">
+      <path d="M42 60 L24 64 M44 66 L28 74 M46 70 L36 84"/>
+      <path d="M78 60 L96 64 M76 66 L92 74 M74 70 L84 84"/>
+    </g>
+    <g class="cl-claw cl-claw-l">
+      <path d="M42 52 L26 44" stroke="#d97f00" stroke-width="5" stroke-linecap="round"/>
+      <path d="M26 44 q-12 -5 -16 -1 q 2 7 10 7 q -3 7 4 10 q 7 -3 6 -12 z" fill="#ff9600" stroke="#d97f00" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <g class="cl-claw cl-claw-r">
+      <path d="M78 52 L94 44" stroke="#d97f00" stroke-width="5" stroke-linecap="round"/>
+      <path d="M94 44 q12 -5 16 -1 q -2 7 -10 7 q 3 7 -4 10 q -7 -3 -6 -12 z" fill="#ff9600" stroke="#d97f00" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <ellipse cx="60" cy="58" rx="26" ry="18" fill="#ff9600" stroke="#d97f00" stroke-width="3"/>
+    <line x1="52" y1="44" x2="50" y2="31" stroke="#d97f00" stroke-width="4" stroke-linecap="round"/>
+    <line x1="68" y1="44" x2="70" y2="31" stroke="#d97f00" stroke-width="4" stroke-linecap="round"/>
+    <g class="cl-eye">
+      <circle cx="50" cy="28" r="6.5" fill="#fff" stroke="#d97f00" stroke-width="2"/>
+      <circle cx="50" cy="28" r="2.6" fill="#3b2a1a"/>
+    </g>
+    <g class="cl-eye">
+      <circle cx="70" cy="28" r="6.5" fill="#fff" stroke="#d97f00" stroke-width="2"/>
+      <circle cx="70" cy="28" r="2.6" fill="#3b2a1a"/>
+    </g>
+    <path d="M53 63 q7 5 14 0" stroke="#d97f00" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>`;
+}
 
 // Elements with data-count are counted up by main.js, elements with data-target grow to that %.
 // data-key identifies them across refreshes so they animate from their previous value.
@@ -111,6 +146,65 @@ function statsCard(snap: Snapshot, s: Strings): string {
     rows.push(infoRow(s.memberSince, escHtml(since)));
   }
   return `<div class="card reveal" style="--i:13">${rows.join('')}</div>`;
+}
+
+/** One leaderboard column: ranked rows, or a waiting notice until the backend answers. */
+function boardPanel(kind: LeaderboardKind, entries: LeaderboardEntry[], active: boolean, s: Strings): string {
+  const body = entries.length
+    ? entries.map(e => `<div class="lb-row${e.isMe ? ' me' : ''}">
+        <span class="lb-rank">#${e.rank}</span>
+        <span class="lb-name">${escHtml(e.pseudo)}</span>
+        <span class="lb-tok">${formatTokens(e.tokens)}</span>
+      </div>`).join('')
+    : `<div class="lb-waiting">${loadingCrab()}<span>${escHtml(s.lbWaiting)}</span></div>`;
+  return `<div class="lb-panel${active ? ' active' : ''}" data-board="${kind}">${body}</div>`;
+}
+
+/**
+ * The opt-in leaderboard card: a pseudo prompt before opting in, then the three
+ * boards plus what the user is sharing. Data flows in from the sync service.
+ */
+export function renderLeaderboard(
+  s: Strings,
+  pseudo: string | undefined,
+  lb: Leaderboards | null,
+  shared: { today: number; last7: number; total: number },
+): string {
+  const title = sectionTitle(s.leaderboard, 14);
+
+  if (!pseudo) {
+    return `${title}
+<div class="card reveal" style="--i:15">
+  <div class="lb-intro">${escHtml(s.lbIntro)}</div>
+  <form class="lb-form" data-form="pseudo">
+    <input class="lb-input" type="text" maxlength="40" placeholder="${escHtml(s.lbPlaceholder)}" aria-label="${escHtml(s.lbPlaceholder)}">
+    <button type="submit" class="lb-save">${escHtml(s.lbJoin)}</button>
+  </form>
+</div>`;
+  }
+
+  const tabs = BOARDS.map((k, i) =>
+    `<button class="lb-tab${i === 0 ? ' active' : ''}" data-board="${k}" type="button">${escHtml(s.boards[k])}</button>`,
+  ).join('');
+  const panels = BOARDS.map((k, i) => boardPanel(k, lb?.[k] ?? [], i === 0, s)).join('');
+
+  return `${title}
+<div class="card reveal" style="--i:15">
+  <div class="lb-tabs" role="tablist">${tabs}</div>
+  <div class="lb-panels">${panels}</div>
+  <div class="lb-shared-title">${escHtml(s.lbShared)}</div>
+  ${infoRow(s.today, formatTokens(shared.today))}
+  ${infoRow(s.last7, formatTokens(shared.last7))}
+  ${infoRow(s.total, formatTokens(shared.total))}
+  <div class="lb-identity">
+    <span>${escHtml(s.lbConnectedAs)} <b>${escHtml(pseudo)}</b></span>
+    <button class="lb-edit" data-action="edit-pseudo" type="button">${escHtml(s.lbEdit)}</button>
+  </div>
+  <form class="lb-form hidden" data-form="pseudo">
+    <input class="lb-input" type="text" maxlength="40" placeholder="${escHtml(s.lbPlaceholder)}" value="${escHtml(pseudo)}" aria-label="${escHtml(s.lbPlaceholder)}">
+    <button type="submit" class="lb-save">${escHtml(s.lbJoin)}</button>
+  </form>
+</div>`;
 }
 
 export function renderDashboard(snap: Snapshot, s: Strings, easterEgg: string): string {

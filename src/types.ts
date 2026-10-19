@@ -60,6 +60,26 @@ export interface ModelRow {
   tokens: number;
 }
 
+// --- Leaderboard (opt-in sync) ---
+
+export type LeaderboardKind = 'alltime' | 'daily' | 'weekly';
+
+export interface LeaderboardEntry {
+  rank: number;
+  pseudo: string;
+  tokens: number;
+  /** Set by the backend for the row that belongs to this install. */
+  isMe?: boolean;
+}
+
+export interface Leaderboards {
+  alltime: LeaderboardEntry[];
+  daily: LeaderboardEntry[];
+  weekly: LeaderboardEntry[];
+  /** This install's rank in each board, when known. */
+  myRank?: Partial<Record<LeaderboardKind, number>>;
+}
+
 /** Everything the UI needs, computed once per refresh tick. */
 export interface Snapshot {
   stats: StatsCache;

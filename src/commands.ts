@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import type { Snapshot } from './types';
-import { getLang, isEnabled } from './config';
+import { getLang, isEnabled, isFocus } from './config';
 import { formatTokens, pick } from './format';
 import { getMessages } from './messages';
 import { buildSnapshot } from './stats/snapshot';
@@ -26,12 +26,24 @@ export function registerCommands(context: vscode.ExtensionContext, refresh: () =
         : `${snap.streak}d streak · ${tokens} tokens · ${snap.today.messages} messages today`;
       vscode.window.showInformationMessage(`🦀 ${msg}`);
     }),
+
+    vscode.commands.registerCommand('claudolingo.toggleFocus', async () => {
+      const on = !isFocus();
+      await vscode.workspace.getConfiguration('claudolingo')
+        .update('focus', on, vscode.ConfigurationTarget.Global);
+      refresh();
+      const fr = getLang() === 'fr';
+      const msg = on
+        ? (fr ? 'Mode focus activé — le crabe te laisse tranquille.' : 'Focus mode on — the crab leaves you alone.')
+        : (fr ? 'Mode focus désactivé — le crabe est de retour.' : 'Focus mode off — the crab is back.');
+      vscode.window.showInformationMessage(`🦀 ${msg}`);
+    }),
   );
 }
 
 /** Mood-based popup when the user hasn't prompted in a while. */
 export function nag(extPath: string) {
-  if (!isEnabled()) return;
+  if (!isEnabled() || isFocus()) return;
   const snap = buildSnapshot();
   if (!snap || snap.mood === 'chill') return;
 

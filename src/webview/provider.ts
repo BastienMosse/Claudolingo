@@ -1,15 +1,22 @@
 import * as vscode from 'vscode';
-import type { Snapshot } from '../types';
+import type { Leaderboards, Snapshot } from '../types';
 import type { Mood } from '../mood';
 import { getLang } from '../config';
 import { escHtml, pick } from '../format';
 import { getMessages } from '../messages';
+import { getPseudo } from '../sync/identity';
 import { buildSnapshot } from '../stats/snapshot';
 import { strings } from './i18n';
 import { renderPage } from './page';
-import { renderDashboard } from './dashboard';
+import { renderDashboard, renderLeaderboard } from './dashboard';
 import { renderErrorBody } from './errorPage';
 import { DASHBOARD_PARTS, renderScene, streakBar } from './scene';
+
+/** Callbacks the panel fires back to the extension host. */
+export interface PanelCallbacks {
+  onRefresh: () => void;
+  onSetPseudo: (pseudo: string) => void;
+}
 
 /** What main.js needs to drive the scene; also sent on every refresh. */
 export interface SceneState {
@@ -39,11 +46,20 @@ export class CrabPanelProvider implements vscode.WebviewViewProvider {
   private page?: 'dashboard' | 'error';
   /** The bubble keeps its message until the mood changes or the crab is clicked. */
   private bubble?: { key: string; text: string };
+  /** Latest leaderboards from the sync service; null until a successful fetch. */
+  private leaderboards: Leaderboards | null = null;
 
   constructor(
     private readonly extensionUri: vscode.Uri,
-    private readonly onRefresh: () => void,
+    private readonly context: vscode.ExtensionContext,
+    private readonly callbacks: PanelCallbacks,
   ) {}
+
+  /** Called by the sync service after a successful fetch; re-renders the board in place. */
+  public setLeaderboards(lb: Leaderboards | null) {
+    this.leaderboards = lb;
+    if (this.snapshot) this.update(this.snapshot);
+  }
 
   get visible(): boolean {
     return !!this.view?.visible;
@@ -56,7 +72,8 @@ export class CrabPanelProvider implements vscode.WebviewViewProvider {
       localResourceRoots: [vscode.Uri.joinPath(this.extensionUri, 'media')],
     };
     view.webview.onDidReceiveMessage(msg => {
-      if (msg?.command === 'refresh') this.onRefresh();
+      if (msg?.command === 'refresh') this.callbacks.onRefresh();
+      else if (msg?.command === 'setPseudo' && typeof msg.pseudo === 'string') this.callbacks.onSetPseudo(msg.pseudo);
     });
     // Hidden webviews lose their DOM: re-render with fresh data when shown again.
     view.onDidChangeVisibility(() => {
@@ -141,6 +158,12 @@ export class CrabPanelProvider implements vscode.WebviewViewProvider {
       messages,
     };
     const easterEgg = billion ? (getMessages(extPath, lang, 'easteregg')[0] ?? '') : '';
-    return { scene, dashboard: renderDashboard(snap, s, easterEgg), billion };
+    const last7 = snap.last7.reduce((a, d) => a + d.tokens, 0);
+    const leaderboard = renderLeaderboard(s, getPseudo(this.context), this.leaderboards, {
+      today: snap.todayTokens,
+      last7,
+      total: snap.totalTokens,
+    });
+    return { scene, dashboard: renderDashboard(snap, s, easterEgg) + leaderboard, billion };
   }
 }

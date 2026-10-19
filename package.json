@@ -46,6 +46,10 @@
       {
         "command": "claudolingo.status",
         "title": "Claudolingo : voir mon streak"
+      },
+      {
+        "command": "claudolingo.toggleFocus",
+        "title": "Claudolingo : activer/désactiver le mode focus"
       }
     ],
     "configuration": {
@@ -69,6 +73,16 @@
           "type": "boolean",
           "default": true,
           "description": "Activer/désactiver Claudolingo"
+        },
+        "claudolingo.focus": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mode focus : masque le compteur de tokens en bas et coupe toutes les alertes"
+        },
+        "claudolingo.apiUrl": {
+          "type": "string",
+          "default": "",
+          "description": "URL du backend Claudolingo (classement). Laisser vide pour le serveur par défaut ; à définir pour le self-host ou le dev."
         }
       }
     }

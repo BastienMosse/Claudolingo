@@ -393,3 +393,140 @@ body {
     transition: none !important;
   }
 }
+
+/* ---------- Leaderboard ---------- */
+
+.lb-intro { font-size: 12px; line-height: 1.5; color: var(--muted); margin-bottom: 10px; }
+
+.lb-form { display: flex; gap: 6px; }
+.lb-form.hidden { display: none; }
+.lb-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 12px;
+}
+.lb-input:focus-visible { outline: none; border-color: var(--orange); }
+.lb-save {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--orange);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 3px 0 var(--orange-dark);
+  cursor: pointer;
+}
+.lb-save:active { translate: 0 3px; box-shadow: 0 0 0 var(--orange-dark); }
+
+.lb-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.lb-tab {
+  flex: 1;
+  padding: 6px 4px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: color .12s, border-color .12s, background .12s;
+}
+.lb-tab.active {
+  color: var(--orange);
+  border-color: color-mix(in srgb, var(--orange) 45%, var(--line));
+  background: color-mix(in srgb, var(--orange) 8%, var(--bg));
+}
+
+.lb-panel { display: none; }
+.lb-panel.active { display: block; }
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-rank { flex: 0 0 auto; width: 32px; color: var(--muted); font-weight: 900; font-variant-numeric: tabular-nums; }
+.lb-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
+.lb-tok { flex: 0 0 auto; color: var(--orange); font-weight: 900; font-variant-numeric: tabular-nums; }
+.lb-row.me { color: var(--orange); }
+.lb-row.me .lb-rank, .lb-row.me .lb-name { color: var(--orange); }
+
+.lb-waiting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- Loading crab ---------- */
+
+.crab-load { width: 88px; height: auto; overflow: visible; }
+
+.cl-crab { animation: cl-bob 1s ease-in-out infinite; transform-origin: 60px 58px; }
+@keyframes cl-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(-2deg); }
+  75% { transform: translateY(-5px) rotate(2deg); }
+}
+
+.cl-shadow { fill: var(--fg); opacity: .22; transform-origin: 60px 84px; animation: cl-shadow 1s ease-in-out infinite; }
+@keyframes cl-shadow {
+  0%, 100% { transform: scaleX(1); opacity: .22; }
+  50% { transform: scaleX(.78); opacity: .12; }
+}
+
+.cl-claw { transform-box: fill-box; }
+.cl-claw-l { transform-origin: 100% 85%; animation: cl-wave-l .5s ease-in-out infinite; }
+.cl-claw-r { transform-origin: 0% 85%; animation: cl-wave-r .5s ease-in-out infinite; }
+@keyframes cl-wave-l { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
+@keyframes cl-wave-r { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(22deg); } }
+
+.cl-eye { transform-box: fill-box; transform-origin: center; animation: cl-blink 3.4s ease-in-out infinite; }
+@keyframes cl-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-crab, .cl-shadow, .cl-claw-l, .cl-claw-r, .cl-eye { animation: none; }
+}
+
+.lb-shared-title { margin: 12px 0 2px; font-size: 11px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+
+.lb-identity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+}
+.lb-identity b { color: var(--orange); font-weight: 900; }
+.lb-edit {
+  border: none;
+  background: none;
+  color: var(--orange);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}

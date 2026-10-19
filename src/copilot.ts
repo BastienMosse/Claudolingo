@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { getLang, isEnabled } from './config';
+import { getLang, isEnabled, isFocus } from './config';
 import { pick } from './format';
 import { getMessages } from './messages';
 
@@ -56,7 +56,7 @@ export function watchCopilot(context: vscode.ExtensionContext) {
       const m = REQUEST_LINE.exec(line);
       return m !== null && isUserFacing(m[1]);
     });
-    if (!used || !isEnabled() || Date.now() - lastShamed < COOLDOWN_MS) return;
+    if (!used || !isEnabled() || isFocus() || Date.now() - lastShamed < COOLDOWN_MS) return;
 
     lastShamed = Date.now();
     vscode.window.showWarningMessage(`🦀 ${pick(getMessages(extPath, getLang(), 'copilot'))}`);

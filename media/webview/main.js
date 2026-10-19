@@ -195,10 +195,41 @@
 
   document.addEventListener('click', e => {
     const btn = e.target.closest('[data-action="refresh"]');
-    if (!btn) return;
-    btn.classList.add('spinning');
-    vscode.postMessage({ command: 'refresh' });
+    if (btn) {
+      btn.classList.add('spinning');
+      vscode.postMessage({ command: 'refresh' });
+      return;
+    }
+    const tab = e.target.closest('.lb-tab');
+    if (tab) { setBoard(tab.dataset.board); return; }
+    const edit = e.target.closest('[data-action="edit-pseudo"]');
+    if (edit) {
+      const form = edit.closest('.card')?.querySelector('[data-form="pseudo"]');
+      if (form) {
+        form.classList.toggle('hidden');
+        const input = form.querySelector('.lb-input');
+        if (input && !form.classList.contains('hidden')) input.focus();
+      }
+    }
   });
+
+  // --- Leaderboard: pseudo form & tab switching ---
+
+  let activeBoard = 'alltime';
+
+  document.addEventListener('submit', e => {
+    const form = e.target.closest('[data-form="pseudo"]');
+    if (!form) return;
+    e.preventDefault();
+    const pseudo = (form.querySelector('.lb-input')?.value || '').trim();
+    if (pseudo) vscode.postMessage({ command: 'setPseudo', pseudo });
+  });
+
+  function setBoard(board) {
+    activeBoard = board;
+    document.querySelectorAll('.lb-tab').forEach(t => t.classList.toggle('active', t.dataset.board === board));
+    document.querySelectorAll('.lb-panel').forEach(p => p.classList.toggle('active', p.dataset.board === board));
+  }
 
   function stopSpinning() {
     document.querySelectorAll('.btn.spinning').forEach(b => b.classList.remove('spinning'));
@@ -212,6 +243,7 @@
       if (dash) {
         app.classList.add('updated');
         dash.innerHTML = msg.dashboard;
+        setBoard(activeBoard); // the swap resets tabs; restore the one in view
         animateCounts(dash, false);
         animateDims(dash, false);
       }

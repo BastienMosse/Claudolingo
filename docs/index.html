@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claudolingo</title>
+  <meta name="description" content="Extension VS Code : ton usage de Claude Code en temps réel, un streak à tenir et un crabe passif-agressif qui te surveille.">
+  <meta property="og:title" content="Claudolingo">
+  <meta property="og:description" content="Le crabe de Claude te surveille. Streak, stats et classement Claude Code dans VS Code.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#ff9600">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/scene.css">
+  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<div class="progress" aria-hidden="true"><span></span></div>
+
+<header class="nav">
+  <a class="brand" href="#top"><img src="favicon.svg" alt="" width="28" height="28">Claudolingo</a>
+  <nav class="nav-links">
+    <a href="#install" data-i18n="nav.install">Installer</a>
+    <a href="#moods" data-i18n="nav.moods">Humeurs</a>
+    <a href="#features" data-i18n="nav.features">Fonctionnalités</a>
+    <div class="lang-switch" role="group" aria-label="Langue / Language">
+      <span class="lang-thumb" aria-hidden="true"></span>
+      <button type="button" data-lang="fr">FR</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <a class="btn btn-secondary btn-sm" href="https://github.com/BastienMosse/Claudolingo" data-repo>
+      <svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><use href="#gh-mark"/></svg>
+      <span>GitHub</span>
+    </a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="blob blob-1"></span>
+      <span class="blob blob-2"></span>
+      <span class="blob blob-3"></span>
+      <span class="spark sp-1">✦</span>
+      <span class="spark sp-2">✦</span>
+      <span class="spark sp-3">✦</span>
+      <span class="spark sp-4">✦</span>
+      <span class="ember em-1"></span>
+      <span class="ember em-2"></span>
+      <span class="ember em-3"></span>
+      <span class="ember em-4"></span>
+      <span class="ember em-5"></span>
+    </div>
+
+    <div class="hero-text">
+      <span class="pill reveal" style="--i:0"><span class="pill-dot" aria-hidden="true"></span><span data-i18n="hero.pill">Extension VS Code</span><span class="pill-version" data-version hidden></span></span>
+      <h1 class="split" data-i18n-html="hero.title">Le crabe de Claude <span class="hl">te surveille.</span></h1>
+      <p class="lead reveal" style="--i:6" data-i18n="hero.lead">Ton usage de Claude Code en temps réel dans VS Code : streak, stats du jour, classement. Et un crabe passif-agressif qui s'énerve dès que tu arrêtes de prompter.</p>
+      <div class="cta reveal" style="--i:8">
+        <a class="btn btn-primary btn-nudge" href="https://github.com/BastienMosse/Claudolingo/releases/latest" data-dl>
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="cta.download">Télécharger le .vsix</span>
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/BastienMosse/Claudolingo" data-repo>
+          <svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><use href="#gh-mark"/></svg>
+          <span data-i18n="cta.repo">Voir le repo</span>
+          <span class="stars" data-stars hidden></span>
+        </a>
+      </div>
+      <p class="fine reveal" style="--i:9" data-i18n="hero.fine">Gratuit et open source. Nécessite VS Code 1.85+ et Claude Code.</p>
+    </div>
+
+    <div class="hero-stage reveal reveal-pop" style="--i:3">
+      <div class="hero-crab" id="hero-crab" data-mood="chill">
+        <div class="hero-bubble" id="hero-bubble" aria-live="polite">
+          <span class="hero-line"><span id="hero-quote"></span><span class="caret" aria-hidden="true"></span></span>
+        </div>
+        <svg class="hero-crab-svg" id="hero-crab-svg" viewBox="0 70 620 360" role="img" data-i18n-aria="hero.crabLabel" aria-label="Le crabe de Claudolingo"></svg>
+      </div>
+      <div class="mood-chip" id="hero-chip">
+        <span class="mood-emoji" id="hero-emoji">😊</span>
+        <span><b id="hero-mood">Chill</b> · <span id="hero-since"></span></span>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#quotes" data-i18n-aria="hero.scroll" aria-label="Défiler"><span></span></a>
+  </section>
+
+  <section class="marquee" id="quotes" data-i18n-aria="quotes.label" aria-label="Répliques du crabe">
+    <div class="marquee-row"><div class="marquee-track" id="marquee-a"></div></div>
+    <div class="marquee-row reverse"><div class="marquee-track" id="marquee-b"></div></div>
+  </section>
+
+  <section id="install" class="section">
+    <h2 class="reveal" data-i18n="install.title">Installation en une minute</h2>
+    <p class="section-lead reveal" style="--i:1" data-i18n="install.lead">Pas encore sur le Marketplace : on passe par le fichier .vsix de la dernière release.</p>
+    <ol class="steps reveal" style="--i:1">
+      <li class="card step reveal" style="--i:2">
+        <span class="step-n">1</span>
+        <h3 data-i18n="install.s1.title">Télécharge le .vsix</h3>
+        <p data-i18n="install.s1.body">Il est attaché à chaque release GitHub, généré automatiquement par la CI.</p>
+        <a class="btn btn-primary btn-sm" href="https://github.com/BastienMosse/Claudolingo/releases/latest" data-dl>
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-file>claudolingo.vsix</span>
+        </a>
+      </li>
+      <li class="card step reveal" style="--i:4">
+        <span class="step-n">2</span>
+        <h3 data-i18n="install.s2.title">Installe-le</h3>
+        <p data-i18n="install.s2.body">Depuis le dossier où tu l'as téléchargé :</p>
+        <div class="code">
+          <span class="prompt" aria-hidden="true">$</span>
+          <code id="install-cmd">code --install-extension claudolingo-*.vsix</code>
+          <button type="button" class="copy" data-copy="install-cmd" data-i18n="install.copy">Copier</button>
+        </div>
+        <p class="fine" data-i18n-html="install.s2.alt">Ou dans VS Code : vue Extensions → <b>⋯</b> → <b>Install from VSIX…</b></p>
+      </li>
+      <li class="card step reveal" style="--i:6">
+        <span class="step-n">3</span>
+        <h3 data-i18n="install.s3.title">Recharge VS Code</h3>
+        <p data-i18n="install.s3.body">L'icône du crabe apparaît dans l'Activity Bar. Il t'attendait. Depuis un moment.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="moods" class="section-band">
+    <div class="section moods-layout">
+      <div class="moods-text">
+        <h2 class="reveal" data-i18n="moods.title">Cinq humeurs, zéro patience</h2>
+        <p class="section-lead reveal" style="--i:1" data-i18n="moods.lead">Plus ton dernier prompt est loin, plus le crabe perd ses moyens. Essaie, c'est la vraie scène de l'extension.</p>
+        <ol class="mood-scale">
+          <li class="reveal reveal-left" style="--i:2" data-mood="chill"><span aria-hidden="true">😊</span><b data-i18n="mood.chill">Chill</b><small>&lt; 5 min</small></li>
+          <li class="reveal reveal-left" style="--i:3" data-mood="waiting"><span aria-hidden="true">🤨</span><b data-i18n="mood.waiting">En attente</b><small>&lt; 30 min</small></li>
+          <li class="reveal reveal-left" style="--i:4" data-mood="impatient"><span aria-hidden="true">😤</span><b data-i18n="mood.impatient">Impatient</b><small>&lt; 1h30</small></li>
+          <li class="reveal reveal-left" style="--i:5" data-mood="angry"><span aria-hidden="true">😡</span><b data-i18n="mood.angry">Énervé</b><small>&lt; 3h</small></li>
+          <li class="reveal reveal-left" style="--i:6" data-mood="unhinged"><span aria-hidden="true">🤬</span><b data-i18n="mood.unhinged">Hors de contrôle</b><small>3h+</small></li>
+        </ol>
+      </div>
+      <div class="moods-play reveal reveal-right" style="--i:2">
+        <div class="scene-wrap" data-fire="2">
+          <div class="scene" id="scene" data-mood="waiting" data-full="0"></div>
+        </div>
+        <div class="playground card">
+          <div class="mood-row" role="group" data-i18n-aria="play.moodsLabel" aria-label="Humeur du crabe">
+            <button type="button" class="mood-btn" data-mood="chill"><span aria-hidden="true">😊</span><span data-i18n="mood.chill">Chill</span></button>
+            <button type="button" class="mood-btn" data-mood="waiting"><span aria-hidden="true">🤨</span><span data-i18n="mood.waiting">En attente</span></button>
+            <button type="button" class="mood-btn" data-mood="impatient"><span aria-hidden="true">😤</span><span data-i18n="mood.impatient">Impatient</span></button>
+            <button type="button" class="mood-btn" data-mood="angry"><span aria-hidden="true">😡</span><span data-i18n="mood.angry">Énervé</span></button>
+            <button type="button" class="mood-btn" data-mood="unhinged"><span aria-hidden="true">🤬</span><span data-i18n="mood.unhinged">Hors de contrôle</span></button>
+            <button type="button" class="mood-btn" data-mood="copilot"><span aria-hidden="true">🕵️</span><span data-i18n="mood.copilot">Copilot ?</span></button>
+          </div>
+          <label class="streak-ctl">
+            <span class="streak-label">🔥 <span data-i18n="play.streak">Streak</span></span>
+            <input type="range" id="streak" min="0" max="30" value="12">
+            <output for="streak" id="streak-out">12 jours</output>
+          </label>
+        </div>
+        <p class="hint" data-i18n="play.hint">Clique sur le crabe. Il adore ça (non).</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2 class="reveal" data-i18n="features.title">Ce que fait le crabe</h2>
+    <div class="features-layout">
+      <figure class="panel-shot card reveal reveal-left" id="panel-shot">
+        <img src="screenshots/themes.png" width="1360" height="3232" loading="lazy" data-i18n-alt="shot.alt" alt="Le panneau Claudolingo en thème sombre et clair">
+      </figure>
+      <div class="features">
+        <article class="card feature reveal" style="--i:1">
+          <span class="f-icon" aria-hidden="true">🔥</span>
+          <h3 data-i18n="f.streak.title">Un streak à tenir</h3>
+          <p data-i18n="f.streak.body">Jours consécutifs d'utilisation de Claude. La scène s'embrase à 7, 14 et 30 jours.</p>
+        </article>
+        <article class="card feature reveal" style="--i:2">
+          <span class="f-icon" aria-hidden="true">😤</span>
+          <h3 data-i18n="f.moods.title">Cinq humeurs</h3>
+          <p data-i18n="f.moods.body">De chill à hors de contrôle selon ton dernier prompt. Le hibou, lui, finit caché dans le buisson.</p>
+        </article>
+        <article class="card feature reveal" style="--i:3">
+          <span class="f-icon" aria-hidden="true">📊</span>
+          <h3 data-i18n="f.stats.title">Stats en direct</h3>
+          <p data-i18n="f.stats.body">Tokens, messages, sessions et appels d'outils du jour, plus la répartition par modèle.</p>
+        </article>
+        <article class="card feature reveal" style="--i:4">
+          <span class="f-icon" aria-hidden="true">📈</span>
+          <h3 data-i18n="f.chart.title">Sept derniers jours</h3>
+          <p data-i18n="f.chart.body">Un graphique de tes tokens par jour pour voir si tu tiens le rythme.</p>
+        </article>
+        <article class="card feature reveal" style="--i:5">
+          <span class="f-icon" aria-hidden="true">🏆</span>
+          <h3 data-i18n="f.rank.title">Classement</h3>
+          <p data-i18n="f.rank.body">Tableaux du jour, de la semaine et all-time. Opt-in : il faut choisir un pseudo pour y apparaître.</p>
+        </article>
+        <article class="card feature reveal" style="--i:6">
+          <span class="f-icon" aria-hidden="true">🕵️</span>
+          <h3 data-i18n="f.copilot.title">Anti-Copilot</h3>
+          <p data-i18n="f.copilot.body">Tu utilises Copilot dans la même fenêtre ? Le crabe l'a vu. Le crabe n'oublie pas.</p>
+        </article>
+        <article class="card feature reveal" style="--i:7">
+          <span class="f-icon" aria-hidden="true">🎧</span>
+          <h3 data-i18n="f.focus.title">Mode focus</h3>
+          <p data-i18n="f.focus.body">Une commande pour masquer le compteur de tokens et couper toutes les alertes.</p>
+        </article>
+        <article class="card feature reveal" style="--i:8">
+          <span class="f-icon" aria-hidden="true">🎉</span>
+          <h3 data-i18n="f.egg.title">Easter egg</h3>
+          <p data-i18n="f.egg.body">Dépasse le milliard de tokens dans la journée. Tu verras bien.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="numbers" data-i18n-aria="numbers.label" aria-label="Chiffres">
+    <div class="number reveal reveal-pop" style="--i:0"><b data-count="5">5</b><span data-i18n="numbers.moods">humeurs</span></div>
+    <div class="number reveal reveal-pop" style="--i:1"><b data-count="0" id="count-lines">0</b><span data-i18n="numbers.lines">répliques passives-agressives</span></div>
+    <div class="number reveal reveal-pop" style="--i:2"><b data-count="30">30</b><span data-i18n="numbers.days">jours pour remplir le panneau</span></div>
+    <div class="number reveal reveal-pop" style="--i:3"><b data-count="1000000000">1 000 000 000</b><span data-i18n="numbers.billion">tokens pour l'easter egg</span></div>
+  </section>
+
+  <section class="section">
+    <div class="card privacy reveal">
+      <span class="f-icon lock" aria-hidden="true">🔒</span>
+      <div>
+        <h3 data-i18n="privacy.title">Tes stats restent chez toi</h3>
+        <p data-i18n-html="privacy.body">Claudolingo lit les stats locales de Claude Code dans <code>~/.claude</code>. Rien n'est envoyé tant que tu n'as pas choisi un pseudo pour le classement, et le backend peut être self-hosté via <code>claudolingo.apiUrl</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section final">
+    <svg class="mini-crab reveal reveal-pop" viewBox="0 0 120 92" aria-hidden="true"><use href="#mini-crab"/></svg>
+    <h2 class="reveal" style="--i:1" data-i18n="final.title">Ton streak commence aujourd'hui.</h2>
+    <p class="section-lead reveal" style="--i:2" data-i18n="final.lead">Le crabe compte sur toi. Enfin, il compte surtout tes tokens.</p>
+    <div class="cta cta-center reveal" style="--i:3">
+      <a class="btn btn-primary btn-nudge" href="https://github.com/BastienMosse/Claudolingo/releases/latest" data-dl>
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="cta.download">Télécharger le .vsix</span>
+      </a>
+      <a class="btn btn-secondary" href="https://github.com/BastienMosse/Claudolingo" data-repo>
+        <svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><use href="#gh-mark"/></svg>
+        <span data-i18n="cta.star">Mettre une étoile</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="walker" aria-hidden="true">
+    <svg class="walker-crab" viewBox="0 0 120 92"><use href="#mini-crab"/></svg>
+  </div>
+  <p data-i18n="footer.line">Projet open source, non affilié à Anthropic ni à Duolingo.</p>
+  <p><a href="https://github.com/BastienMosse/Claudolingo" data-repo>GitHub</a> · <a href="https://github.com/BastienMosse/Claudolingo/releases" data-i18n="footer.releases">Releases</a> · <span data-i18n="footer.font">Police Nunito (SIL OFL)</span></p>
+</footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="gh-mark" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></symbol>
+  <!-- Same little crab as the leaderboard loading indicator (src/webview/dashboard.ts) -->
+  <symbol id="mini-crab" viewBox="0 0 120 92" overflow="visible">
+    <ellipse class="cl-shadow" cx="60" cy="84" rx="30" ry="6"/>
+    <g class="cl-crab">
+      <g stroke="#d97f00" stroke-width="4" stroke-linecap="round" fill="none">
+        <path d="M42 60 L24 64 M44 66 L28 74 M46 70 L36 84"/>
+        <path d="M78 60 L96 64 M76 66 L92 74 M74 70 L84 84"/>
+      </g>
+      <g class="cl-claw cl-claw-l">
+        <path d="M42 52 L26 44" stroke="#d97f00" stroke-width="5" stroke-linecap="round"/>
+        <path d="M26 44 q-12 -5 -16 -1 q 2 7 10 7 q -3 7 4 10 q 7 -3 6 -12 z" fill="#ff9600" stroke="#d97f00" stroke-width="2.5" stroke-linejoin="round"/>
+      </g>
+      <g class="cl-claw cl-claw-r">
+        <path d="M78 52 L94 44" stroke="#d97f00" stroke-width="5" stroke-linecap="round"/>
+        <path d="M94 44 q12 -5 16 -1 q -2 7 -10 7 q 3 7 -4 10 q -7 -3 -6 -12 z" fill="#ff9600" stroke="#d97f00" stroke-width="2.5" stroke-linejoin="round"/>
+      </g>
+      <ellipse cx="60" cy="58" rx="26" ry="18" fill="#ff9600" stroke="#d97f00" stroke-width="3"/>
+      <line x1="52" y1="44" x2="50" y2="31" stroke="#d97f00" stroke-width="4" stroke-linecap="round"/>
+      <line x1="68" y1="44" x2="70" y2="31" stroke="#d97f00" stroke-width="4" stroke-linecap="round"/>
+      <g class="cl-eye">
+        <circle cx="50" cy="28" r="6.5" fill="#fff" stroke="#d97f00" stroke-width="2"/>
+        <circle cx="50" cy="28" r="2.6" fill="#3b2a1a"/>
+      </g>
+      <g class="cl-eye">
+        <circle cx="70" cy="28" r="6.5" fill="#fff" stroke="#d97f00" stroke-width="2"/>
+        <circle cx="70" cy="28" r="2.6" fill="#3b2a1a"/>
+      </g>
+      <path d="M53 63 q7 5 14 0" stroke="#d97f00" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    </g>
+  </symbol>
+</svg>
+
+<script src="assets/scene.js"></script>
+<script src="main.js" defer></script>
+</body>
+</html>

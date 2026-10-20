@@ -1,0 +1,509 @@
+/* =========================================================
+   Scene: layout, crab & owl animations per mood.
+   Moods are driven by data-mood on .scene:
+   chill | waiting | impatient | angry | unhinged | lost (error page)
+   Animated SVG parts sit inside a <g transform>, so `transform-origin: 0 0`
+   is the part's own pivot (shoulder, hinge…).
+   ========================================================= */
+
+/* --- Frame --- */
+
+.scene-wrap {
+  position: relative;
+  isolation: isolate;
+  --glow-o: 0;
+  --glow-blur: 8px;
+}
+.scene-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  z-index: -1;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ffc800, #ff9600 45%, #ff5a1f);
+  filter: blur(var(--glow-blur));
+  opacity: var(--glow-o);
+  animation: glow-pulse 2.4s ease-in-out infinite;
+}
+/* The scene glows brighter as the streak grows */
+.scene-wrap[data-fire="1"] { --glow-o: .35; --glow-blur: 6px; }
+.scene-wrap[data-fire="2"] { --glow-o: .55; --glow-blur: 9px; }
+.scene-wrap[data-fire="3"] { --glow-o: .75; --glow-blur: 12px; }
+.scene-wrap[data-fire="4"] { --glow-o: .95; --glow-blur: 16px; }
+
+@keyframes glow-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); filter: blur(calc(var(--glow-blur) * 1.4)); }
+}
+
+.scene {
+  --crab-main: #ea623e;
+  --crab-dark: #c74a2b;
+  --crab-light: #f6896a;
+  --crab-brow: #9b3420;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(0, 0, 0, .12);
+  border-bottom-width: 4px;
+  background: #b3eafc;
+}
+.scene[data-mood="angry"] {
+  --crab-main: #e9553a;
+  --crab-dark: #c03f26;
+}
+.scene[data-mood="unhinged"] {
+  --crab-main: #e63b2b;
+  --crab-dark: #b02a1a;
+  --crab-light: #f26a55;
+  --crab-brow: #7d1d10;
+}
+
+.scene-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.scene-svg text { font-family: 'Nunito', sans-serif; }
+
+/* Crab colors (fill attributes in the SVG are only a fallback) */
+.c-main  { fill: var(--crab-main);  transition: fill .6s; }
+.c-dark  { fill: var(--crab-dark);  transition: fill .6s; }
+.c-light { fill: var(--crab-light); transition: fill .6s; }
+.c-limb  { stroke: var(--crab-dark); transition: stroke .6s; }
+.c-hl    { stroke: var(--crab-light); }
+.c-brow  { stroke: var(--crab-brow); }
+
+/* --- Background --- */
+
+.cloud { opacity: .92; animation: drift 38s ease-in-out infinite alternate; }
+.cloud-2 { animation-duration: 29s; animation-delay: -9s; }
+.cloud-3 { animation-duration: 45s; animation-delay: -20s; }
+.cloud-4 { animation-duration: 33s; animation-delay: -4s; }
+@keyframes drift {
+  from { transform: translateX(-24px); }
+  to   { transform: translateX(24px); }
+}
+
+.tuft { transform-origin: 0 0; animation: sway 3.2s ease-in-out infinite alternate; }
+.tuft-b { animation-duration: 2.6s; animation-delay: -1s; }
+@keyframes sway {
+  from { transform: rotate(-7deg); }
+  to   { transform: rotate(7deg); }
+}
+
+.sky-alert { opacity: 0; transition: opacity 1s; }
+[data-mood="unhinged"] .sky-alert { animation: alert 1.8s ease-in-out infinite; }
+@keyframes alert {
+  0%, 100% { opacity: .08; }
+  50% { opacity: .3; }
+}
+
+.bush-front { transform-origin: 680px 450px; }
+[data-mood="unhinged"] .bush-front { animation: rustle 6s ease-in-out infinite; }
+@keyframes rustle {
+  0%, 52%, 100% { transform: none; }
+  56% { transform: rotate(1.2deg); }
+  60% { transform: rotate(-1.2deg); }
+  64% { transform: none; }
+}
+
+/* --- Sign --- */
+
+.flame { transform-origin: 0 22px; animation: flicker .8s ease-in-out infinite alternate; }
+.flame-end { animation-duration: .65s; animation-delay: -.3s; }
+@keyframes flicker {
+  from { transform: scale(1, 1) skewX(0deg); }
+  to   { transform: scale(.94, 1.09) skewX(-4deg); }
+}
+
+.sign-fill { transform-origin: 70px 0; animation: grow-x 1.1s cubic-bezier(.3, 1.35, .5, 1) .35s both; }
+@keyframes grow-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.sign-crack { opacity: 0; transition: opacity .4s; }
+[data-mood="angry"]:not([data-full="1"]) .sign-crack,
+[data-mood="unhinged"]:not([data-full="1"]) .sign-crack {
+  opacity: 1;
+  animation: crack 1.2s ease-in-out infinite;
+}
+@keyframes crack {
+  0%, 100% { transform: none; }
+  50% { transform: translateX(2px) scale(1.12); }
+}
+
+/* --- Bubble --- */
+
+.bubble { transform-origin: 432px 226px; }
+.scene:not(.ready) .bubble { opacity: 0; }
+.bubble.pop { animation: bubble-pop .5s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes bubble-pop {
+  from { transform: scale(.55); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.bubble-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+}
+#bubble-text {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.22;
+  color: #4b4b4b;
+}
+
+/* =========================================================
+   Crab
+   ========================================================= */
+
+.crab-hit { cursor: pointer; }
+.crab-jump { transform-origin: 264px 400px; }
+.crab-root { transform-origin: 264px 400px; }
+.crab-shadow { transform-box: fill-box; transform-origin: center; }
+
+.crab-body { transform-origin: 272px 352px; animation: breathe 3.2s ease-in-out infinite; }
+@keyframes breathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.012, 1.025); }
+}
+
+.crab-arm { transform-origin: 0 0; }
+.jaw { transform-origin: 0 0; }
+.leg { transform-box: fill-box; transform-origin: top; }
+
+.crab-face { transform-origin: 272px 260px; transition: transform .5s; }
+
+.crab-eye { transform-box: fill-box; transform-origin: center; transition: transform .07s; }
+#crab.blink .crab-eye { transform: scaleY(.08); }
+.crab-pupil { transition: transform .4s; }
+
+.crab-brow { transform-origin: 0 0; transition: transform .5s cubic-bezier(.3, 1.5, .5, 1); }
+
+.mouth { opacity: 0; transition: opacity .25s; }
+[data-mood="chill"] .mouth-chill,
+[data-mood="waiting"] .mouth-waiting,
+[data-mood="impatient"] .mouth-impatient,
+[data-mood="angry"] .mouth-angry,
+[data-mood="unhinged"] .mouth-unhinged,
+[data-mood="lost"] .mouth-lost { opacity: 1; }
+
+.crab-steam, .crab-sparkles, .crab-question { display: none; }
+.puff, .sparkle { transform-box: fill-box; transform-origin: center; }
+.q { transform-box: fill-box; transform-origin: center bottom; }
+
+/* --- chill: happy dance, waving claws, sparkles --- */
+
+[data-mood="chill"] .crab-root { animation: dance 1.4s ease-in-out infinite; }
+[data-mood="chill"] .crab-arm-r { animation: wave-r .7s ease-in-out infinite alternate; }
+[data-mood="chill"] .crab-arm-l { animation: wave-l .7s ease-in-out infinite alternate; }
+[data-mood="chill"] .jaw-top { animation: pinch-top .35s ease-in-out infinite alternate; }
+[data-mood="chill"] .jaw-bot { animation: pinch-bot .35s ease-in-out infinite alternate; }
+[data-mood="chill"] .crab-brow-l { transform: translateY(-8px) rotate(-6deg); }
+[data-mood="chill"] .crab-brow-r { transform: translateY(-8px) rotate(6deg); }
+[data-mood="chill"] .crab-sparkles { display: inline; }
+.sparkle { animation: twinkle 1.6s ease-in-out infinite; }
+.s2 { animation-delay: -.5s; }
+.s3 { animation-delay: -1.1s; }
+
+@keyframes dance {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  25% { transform: translate(-6px, -7px) rotate(-3deg); }
+  50% { transform: translate(0, 0) rotate(0); }
+  75% { transform: translate(6px, -7px) rotate(3deg); }
+}
+@keyframes wave-r {
+  from { transform: rotate(-14deg); }
+  to   { transform: rotate(8deg); }
+}
+@keyframes wave-l {
+  from { transform: rotate(-4deg); }
+  to   { transform: rotate(20deg); }
+}
+@keyframes pinch-top {
+  from { transform: rotate(0); }
+  to   { transform: rotate(14deg); }
+}
+@keyframes pinch-bot {
+  from { transform: rotate(0); }
+  to   { transform: rotate(-14deg); }
+}
+@keyframes twinkle {
+  0%, 100% { transform: scale(0) rotate(0); opacity: 0; }
+  50% { transform: scale(1) rotate(45deg); opacity: 1; }
+}
+
+/* --- waiting: taps a foot, snaps a claw, looks around --- */
+
+[data-mood="waiting"] .crab-arm-r .jaw-top { animation: snap-top 2.6s ease-in-out infinite; }
+[data-mood="waiting"] .crab-arm-r .jaw-bot { animation: snap-bot 2.6s ease-in-out infinite; }
+[data-mood="waiting"] .leg-4 { animation: tap 1.3s ease-in-out infinite; }
+[data-mood="waiting"] .crab-pupil { animation: look-around 7s ease-in-out infinite; }
+[data-mood="waiting"] .crab-brow-l { transform: translateY(-2px); }
+[data-mood="waiting"] .crab-brow-r { transform: translateY(-5px) rotate(4deg); }
+
+@keyframes snap-top {
+  0%, 60%, 80%, 100% { transform: rotate(0); }
+  70%, 90% { transform: rotate(16deg); }
+}
+@keyframes snap-bot {
+  0%, 60%, 80%, 100% { transform: rotate(0); }
+  70%, 90% { transform: rotate(-16deg); }
+}
+@keyframes tap {
+  0%, 50%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-8px); }
+}
+@keyframes look-around {
+  0%, 28%, 100% { transform: translate(0, 0); }
+  34%, 52% { transform: translate(-8px, 1px); }
+  58%, 78% { transform: translate(7px, -2px); }
+  84% { transform: translate(0, 0); }
+}
+
+/* --- impatient: faster tapping, tighter brows --- */
+
+[data-mood="impatient"] .crab-root { animation: fidget .5s ease-in-out infinite alternate; }
+[data-mood="impatient"] .crab-arm-r { animation: shake-r .55s ease-in-out infinite alternate; }
+[data-mood="impatient"] .crab-arm-r .jaw-top { animation: snap-top 1.1s ease-in-out infinite; }
+[data-mood="impatient"] .crab-arm-r .jaw-bot { animation: snap-bot 1.1s ease-in-out infinite; }
+[data-mood="impatient"] .crab-arm-l .jaw-top { animation: snap-top 1.4s ease-in-out infinite -.4s; }
+[data-mood="impatient"] .crab-arm-l .jaw-bot { animation: snap-bot 1.4s ease-in-out infinite -.4s; }
+[data-mood="impatient"] .leg-4 { animation: tap .6s ease-in-out infinite; }
+[data-mood="impatient"] .leg-1 { animation: tap .6s ease-in-out infinite -.3s; }
+[data-mood="impatient"] .crab-brow-l { transform: translateY(4px) rotate(8deg); }
+[data-mood="impatient"] .crab-brow-r { transform: translateY(4px) rotate(-8deg); }
+
+@keyframes fidget {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+@keyframes shake-r {
+  from { transform: rotate(-4deg); }
+  to   { transform: rotate(4deg); }
+}
+
+/* --- angry: shakes claws, steam --- */
+
+[data-mood="angry"] .crab-root { animation: shake 0.32s linear infinite; }
+[data-mood="angry"] .crab-arm-r { animation: fist-r .22s ease-in-out infinite alternate; }
+[data-mood="angry"] .crab-arm-l { animation: fist-l .25s ease-in-out infinite alternate; }
+[data-mood="angry"] .jaw-top { animation: snap-top .9s ease-in-out infinite; }
+[data-mood="angry"] .jaw-bot { animation: snap-bot .9s ease-in-out infinite; }
+[data-mood="angry"] .crab-brow-l { transform: translate(3px, 20px) rotate(27deg); }
+[data-mood="angry"] .crab-brow-r { transform: translate(-3px, 20px) rotate(-27deg); }
+[data-mood="angry"] .crab-steam { display: inline; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+@keyframes fist-r {
+  from { transform: rotate(-12deg); }
+  to   { transform: rotate(6deg); }
+}
+@keyframes fist-l {
+  from { transform: rotate(-6deg); }
+  to   { transform: rotate(12deg); }
+}
+
+.puff { opacity: 0; animation: puff 1.4s ease-out infinite; }
+.p2 { animation-delay: -.35s; }
+.p3 { animation-delay: -.7s; }
+.p4 { animation-delay: -1.05s; }
+@keyframes puff {
+  0% { transform: translate(0, 6px) scale(.3); opacity: 0; }
+  30% { opacity: .9; }
+  100% { transform: translate(0, -42px) scale(1.5); opacity: 0; }
+}
+
+/* --- unhinged: vibrates, flails, tiny pupils, red sky --- */
+
+[data-mood="unhinged"] .crab-root { animation: vibrate .14s linear infinite; }
+[data-mood="unhinged"] .crab-arm-r { animation: flail-r .17s ease-in-out infinite alternate; }
+[data-mood="unhinged"] .crab-arm-l { animation: flail-l .19s ease-in-out infinite alternate; }
+[data-mood="unhinged"] .jaw-top { animation: pinch-top .12s linear infinite alternate; }
+[data-mood="unhinged"] .jaw-bot { animation: pinch-bot .12s linear infinite alternate; }
+[data-mood="unhinged"] .crab-pupil { transform-box: fill-box; transform-origin: center; animation: crazy-eyes .3s steps(2) infinite; }
+[data-mood="unhinged"] .crab-brow-l { transform: translateY(14px) rotate(24deg); }
+[data-mood="unhinged"] .crab-brow-r { transform: translateY(14px) rotate(-24deg); }
+[data-mood="unhinged"] .crab-steam { display: inline; }
+[data-mood="unhinged"] .puff { animation-duration: .8s; }
+
+@keyframes vibrate {
+  0%   { transform: translate(0, 0) rotate(0); }
+  25%  { transform: translate(-3px, 1px) rotate(-1deg); }
+  50%  { transform: translate(2px, -2px) rotate(.8deg); }
+  75%  { transform: translate(-1px, 2px) rotate(-.5deg); }
+  100% { transform: translate(3px, 0) rotate(1deg); }
+}
+@keyframes flail-r {
+  from { transform: rotate(-22deg); }
+  to   { transform: rotate(12deg); }
+}
+@keyframes flail-l {
+  from { transform: rotate(-14deg); }
+  to   { transform: rotate(26deg); }
+}
+@keyframes crazy-eyes {
+  from { transform: scale(.55) translate(-2px, 1px); }
+  to   { transform: scale(.55) translate(2px, -1px); }
+}
+
+/* --- lost (error page): confused, looks around, question marks --- */
+
+[data-mood="lost"] .crab-root { animation: lost-sway 3s ease-in-out infinite; }
+[data-mood="lost"] .crab-face { animation: tilt 3s ease-in-out infinite; }
+[data-mood="lost"] .crab-pupil { animation: look-around 4s ease-in-out infinite; }
+[data-mood="lost"] .crab-arm-l { animation: scratch 1.6s ease-in-out infinite; }
+[data-mood="lost"] .crab-brow-l { transform: translateY(-10px) rotate(-10deg); }
+[data-mood="lost"] .crab-brow-r { transform: translateY(2px) rotate(4deg); }
+[data-mood="lost"] .crab-question { display: inline; }
+.q1 { animation: bob 1.8s ease-in-out infinite; }
+.q2 { animation: bob 1.8s ease-in-out infinite -.9s; }
+
+@keyframes lost-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+@keyframes tilt {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes scratch {
+  0%, 40%, 100% { transform: rotate(0); }
+  55%, 85% { transform: rotate(18deg); }
+  70% { transform: rotate(10deg); }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-8px) rotate(8deg); }
+}
+
+/* --- click: jump + pinch (overrides the mood animation for a moment) --- */
+
+.crab-hit.jump .crab-jump { animation: crab-jump .7s cubic-bezier(.3, .8, .4, 1); }
+.crab-hit.jump .jaw-top { animation: pinch-top .12s ease-in-out 4 alternate; }
+.crab-hit.jump .jaw-bot { animation: pinch-bot .12s ease-in-out 4 alternate; }
+.scene.jumping .crab-shadow { animation: shadow-jump .7s cubic-bezier(.3, .8, .4, 1); }
+
+@keyframes crab-jump {
+  0%   { transform: scale(1, 1); }
+  15%  { transform: scale(1.08, .9); }
+  40%  { transform: translateY(-38px) scale(.95, 1.06); }
+  65%  { transform: translateY(0) scale(1.1, .88); }
+  82%  { transform: scale(.97, 1.03); }
+  100% { transform: scale(1, 1); }
+}
+@keyframes shadow-jump {
+  0%, 100% { transform: scale(1); opacity: .12; }
+  40% { transform: scale(.7); opacity: .06; }
+}
+
+/* =========================================================
+   Owl: watches the crab, gets scared, hides behind the bush
+   ========================================================= */
+
+.owl-hide { transition: transform .9s cubic-bezier(.5, -.4, .4, 1.4); }
+.owl-bob { transform-origin: 670px 335px; animation: owl-bob 2.6s ease-in-out infinite; }
+.owl-wing { transform-origin: 0 0; }
+.owl-eye { transform-box: fill-box; transform-origin: center; transition: transform .07s; }
+#owl.blink .owl-eye { transform: scaleY(.08); }
+.owl-pupil { transform-box: fill-box; transform-origin: center; transition: transform .4s; }
+.owl-sweat { transform-box: fill-box; transform-origin: center top; }
+
+.owl-eyes-happy, .owl-brows, .owl-beak-open, .owl-sweat { opacity: 0; transition: opacity .3s; }
+.owl-eyes-open, .owl-beak { transition: opacity .3s; }
+
+@keyframes owl-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* chill: happy eyes, hops and flaps */
+[data-mood="chill"] .owl-eyes-open { opacity: 0; }
+[data-mood="chill"] .owl-eyes-happy { opacity: 1; }
+[data-mood="chill"] .owl-bob { animation: owl-hop .7s ease-in-out infinite; }
+[data-mood="chill"] .owl-wing-l { animation: flap-l .35s ease-in-out infinite alternate; }
+[data-mood="chill"] .owl-wing-r { animation: flap-r .35s ease-in-out infinite alternate; }
+
+@keyframes owl-hop {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  10% { transform: translateY(0) scale(1.05, .95); }
+  45% { transform: translateY(-12px) scale(.97, 1.03); }
+}
+@keyframes flap-l {
+  from { transform: rotate(0); }
+  to   { transform: rotate(32deg); }
+}
+@keyframes flap-r {
+  from { transform: rotate(0); }
+  to   { transform: rotate(-32deg); }
+}
+
+/* waiting: keeps an eye on the crab */
+[data-mood="waiting"] .owl-pupil { animation: owl-glance 5s ease-in-out infinite; }
+@keyframes owl-glance {
+  0%, 40%, 100% { transform: translate(0, 0); }
+  48%, 75% { transform: translate(-6px, 1px); }
+}
+
+/* impatient: worried, sinks a little */
+[data-mood="impatient"] .owl-hide { transform: translateY(10px); }
+[data-mood="impatient"] .owl-brows { opacity: 1; }
+[data-mood="impatient"] .owl-pupil { transform: translate(-6px, 1px); }
+[data-mood="impatient"] .owl-bob { animation: tremble .4s ease-in-out infinite; }
+
+/* angry: scared, half hidden, sweating */
+[data-mood="angry"] .owl-hide { transform: translateY(54px); }
+[data-mood="angry"] .owl-brows,
+[data-mood="angry"] .owl-beak-open { opacity: 1; }
+[data-mood="angry"] .owl-beak { opacity: 0; }
+[data-mood="angry"] .owl-pupil { transform: translate(-6px, 0) scale(.75); }
+[data-mood="angry"] .owl-bob { animation: tremble .16s linear infinite; }
+[data-mood="angry"] .owl-sweat { opacity: 1; animation: sweat 1.2s ease-in infinite; }
+
+@keyframes tremble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1.5px); }
+  75% { transform: translateX(1.5px); }
+}
+@keyframes sweat {
+  0% { transform: translateY(0) scale(.6); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(26px) scale(1); opacity: 0; }
+}
+
+/* unhinged: hidden behind the bush, peeks every few seconds */
+[data-mood="unhinged"] .owl-hide { transform: translateY(136px); animation: owl-peek 6s ease-in-out infinite 1s; }
+[data-mood="unhinged"] .owl-brows { opacity: 1; }
+[data-mood="unhinged"] .owl-pupil { transform: translate(-5px, 0) scale(.6); }
+
+@keyframes owl-peek {
+  0%, 55%, 100% { transform: translateY(136px); }
+  63%, 82% { transform: translateY(64px); }
+  70% { transform: translateY(68px) rotate(-2deg); }
+  76% { transform: translateY(64px) rotate(2deg); }
+}
+
+/* startled when the crab is clicked */
+#owl.startle .owl-bob { animation: startle .5s cubic-bezier(.3, 1.5, .5, 1); }
+#owl.startle .owl-wing-l { animation: flap-l .1s 4 alternate; }
+#owl.startle .owl-wing-r { animation: flap-r .1s 4 alternate; }
+@keyframes startle {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-16px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene *, .scene-wrap::before { animation: none !important; transition: none !important; }
+}

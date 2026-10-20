@@ -2,6 +2,10 @@
 
 A Duolingo-inspired VS Code extension that tracks your Claude Code usage with a passive-aggressive crab mascot.
 
+<p align="center">
+  <img src="docs/screenshots/themes.png" alt="Claudolingo panel in dark and light themes" width="600">
+</p>
+
 ## What it does
 
 Claudolingo lives in your Activity Bar and watches your Claude Pro token usage in real time. The crab has opinions about your prompting habits — and it's not afraid to share them.
@@ -21,6 +25,8 @@ Claudolingo lives in your Activity Bar and watches your Claude Pro token usage i
 - **Duolingo look** — Nunito font, chunky 3D cards and buttons, orange accent, animated counters and bars; follows your VS Code light/dark theme
 - **Nag notifications** — mood-based popup reminders when you haven't prompted in a while
 - **Easter egg** — hit 1 billion tokens in a single day and something special happens
+
+![The crab's moods](docs/screenshots/moods.png)
 
 ## How it works
 

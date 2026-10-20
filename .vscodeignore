@@ -6,3 +6,5 @@ media/serie-en-danger_editable.svg
 .github/
 .vscode/
 *.vsix
+docs/
+scripts/

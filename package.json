@@ -91,7 +91,8 @@
     "vscode:prepublish": "npm run build",
     "build": "tsc",
     "watch": "tsc -w",
-    "package": "vsce package"
+    "package": "vsce package",
+    "site": "node scripts/site.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",

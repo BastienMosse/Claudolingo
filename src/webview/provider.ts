@@ -5,7 +5,7 @@ import { getLang } from '../config';
 import { escHtml, pick } from '../format';
 import { getMessages } from '../messages';
 import { getPseudo } from '../sync/identity';
-import { buildSnapshot } from '../stats/snapshot';
+import { getSnapshot } from '../stats/snapshot';
 import { strings } from './i18n';
 import { renderPage } from './page';
 import { renderDashboard, renderLeaderboard } from './dashboard';
@@ -16,6 +16,8 @@ import { DASHBOARD_PARTS, renderScene, streakBar } from './scene';
 export interface PanelCallbacks {
   onRefresh: () => void;
   onSetPseudo: (pseudo: string) => void;
+  /** The panel was opened or became visible again. */
+  onVisible: () => void;
 }
 
 /** What main.js needs to drive the scene; also sent on every refresh. */
@@ -77,14 +79,17 @@ export class CrabPanelProvider implements vscode.WebviewViewProvider {
     });
     // Hidden webviews lose their DOM: re-render with fresh data when shown again.
     view.onDidChangeVisibility(() => {
-      if (view.visible) this.render();
+      if (!view.visible) return;
+      this.render();
+      this.callbacks.onVisible();
     });
     view.onDidDispose(() => {
       this.view = undefined;
       this.page = undefined;
     });
-    if (this.snapshot === undefined) this.snapshot = buildSnapshot();
+    if (this.snapshot === undefined) this.snapshot = getSnapshot();
     this.render();
+    this.callbacks.onVisible();
   }
 
   /** Pushes new data without reloading the page, so animations keep running. */

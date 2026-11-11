@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import type { Leaderboards, Snapshot } from '../types';
 import { getApiUrl } from '../config';
+import type { Coordinator } from '../coordinator';
 import { dateKey } from '../format';
 import { getClientId, getPseudo } from './identity';
 import { fetchLeaderboards, postScore, type ScorePost } from './api';
@@ -12,16 +13,23 @@ const MAX_TOKENS = 1e15; // API cap
  * Orchestrates the opt-in leaderboard sync: posts this player's cumulative total
  * plus one dated score per active day (so the daily/weekly boards add up), then
  * pulls the boards back. Does nothing until the user has set a pseudo.
+ *
+ * With several VS Code windows open, only one pushes per interval (they all read
+ * the same ~/.claude data); the others just pull the boards when their panel is shown.
  */
 export class SyncService {
   private timer?: ReturnType<typeof setInterval>;
   private inFlight = false;
+  /** Separate from inFlight so a pull never makes a claimed push slot skip its push. */
+  private pulling = false;
   private leaderboards: Leaderboards | null = null;
 
   constructor(
     private readonly ctx: vscode.ExtensionContext,
     private readonly getSnapshot: () => Snapshot | null,
     private readonly onLeaderboards: (lb: Leaderboards | null) => void,
+    private readonly coordinator: Coordinator,
+    private readonly isPanelVisible: () => boolean,
   ) {}
 
   /** True once the user has opted in by choosing a pseudo. */
@@ -35,8 +43,37 @@ export class SyncService {
 
   start(): void {
     if (this.timer) return;
-    this.timer = setInterval(() => void this.syncNow(), SYNC_INTERVAL_MS);
-    void this.syncNow();
+    this.timer = setInterval(() => void this.tick(), SYNC_INTERVAL_MS);
+    void this.tick();
+  }
+
+  /** Scheduled cycle: push if this window won the slot, else pull only if someone is looking. */
+  private async tick(): Promise<void> {
+    if (!this.enabled) return;
+    if (this.coordinator.claim('sync', SYNC_INTERVAL_MS)) await this.syncNow();
+    else if (this.isPanelVisible()) await this.pull();
+  }
+
+  /** Fetches the boards if this window has none yet (e.g. its panel was just opened). */
+  async pullIfMissing(): Promise<void> {
+    if (!this.leaderboards) await this.pull();
+  }
+
+  /** Fetches the boards without pushing anything. */
+  private async pull(): Promise<void> {
+    if (!this.enabled || this.pulling) return;
+    this.pulling = true;
+    try {
+      this.publish(await fetchLeaderboards(getApiUrl(), getClientId(this.ctx)));
+    } finally {
+      this.pulling = false;
+    }
+  }
+
+  private publish(lb: Leaderboards | null): void {
+    if (!lb) return;
+    this.leaderboards = lb;
+    this.onLeaderboards(lb);
   }
 
   dispose(): void {
@@ -44,7 +81,7 @@ export class SyncService {
     this.timer = undefined;
   }
 
-  /** One push + pull cycle. Safe to call on the manual refresh; no-ops when not opted in. */
+  /** One push + pull cycle, unconditionally (manual refresh). No-ops when not opted in. */
   async syncNow(): Promise<void> {
     const pseudo = getPseudo(this.ctx);
     if (!pseudo || this.inFlight) return;
@@ -59,11 +96,7 @@ export class SyncService {
       // All scores are independent and the server keeps the max, so order doesn't matter.
       await Promise.all(this.buildScores(snap, uuid, pseudo).map(s => postScore(baseUrl, s)));
 
-      const lb = await fetchLeaderboards(baseUrl, uuid);
-      if (lb) {
-        this.leaderboards = lb;
-        this.onLeaderboards(lb);
-      }
+      this.publish(await fetchLeaderboards(baseUrl, uuid));
     } finally {
       this.inFlight = false;
     }

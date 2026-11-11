@@ -3,7 +3,7 @@ import type { Snapshot } from './types';
 import { getLang, isEnabled, isFocus } from './config';
 import { formatTokens, pick } from './format';
 import { getMessages } from './messages';
-import { buildSnapshot } from './stats/snapshot';
+import { getSnapshot } from './stats/snapshot';
 
 export function registerCommands(context: vscode.ExtensionContext, refresh: () => Snapshot | null) {
   const extPath = context.extensionUri.fsPath;
@@ -15,7 +15,7 @@ export function registerCommands(context: vscode.ExtensionContext, refresh: () =
     }),
 
     vscode.commands.registerCommand('claudolingo.status', () => {
-      const snap = buildSnapshot();
+      const snap = getSnapshot();
       if (!snap) {
         vscode.window.showWarningMessage('🦀 Stats Claude introuvables (~/.claude/stats-cache.json)');
         return;
@@ -44,7 +44,7 @@ export function registerCommands(context: vscode.ExtensionContext, refresh: () =
 /** Mood-based popup when the user hasn't prompted in a while. */
 export function nag(extPath: string) {
   if (!isEnabled() || isFocus()) return;
-  const snap = buildSnapshot();
+  const snap = getSnapshot();
   if (!snap || snap.mood === 'chill') return;
 
   const msg = `🦀 ${pick(getMessages(extPath, getLang(), snap.mood))}`;
